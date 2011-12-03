@@ -1,6 +1,6 @@
 {
     "name": "appzone-live-test",
-    "version": "0.1.9",
+    "version": "0.0.1",
     "directories": {
         "lib": "./lib"
     },
