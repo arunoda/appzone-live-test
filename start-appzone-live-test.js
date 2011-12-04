@@ -27,5 +27,5 @@ var MtRouter = require('./lib/mtRouter');
 var mtRouter = new MtRouter(appzoneConfig, ports.mt, model);
 
 var MoRouter = require('./lib/moRouter');
-var moRouter = new MtRouter(appzoneConfig, ports.mo, model);
+var moRouter = new MoRouter(appzoneConfig, ports.mo, model);
 
