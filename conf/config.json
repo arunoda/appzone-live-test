@@ -1,0 +1,20 @@
+{
+	"mongo": {
+		"url": "localhost:27017/live-test",
+		"collections": {
+			"app": "app",
+			"phone": "phone"
+		}
+	}, 
+
+	"ports": {
+		"mo": 11111,
+		"mt": 11112
+	},
+
+	"appzone": {
+		"url": "http://localhost:8008/simulator",
+		"appId": "app",
+		"password": "pass"
+	}
+}
