@@ -16,6 +16,9 @@
         "mongoskin": ">= 0.2.2",
         "express": ">= 2.4.0",
         "nodemock": ">= 0.2.16",
-        "mongotest": " 0.1.x"
+        "mongotest": " 0.1.x",
+        "appzone": "0.2.x",
+        "horaa": "0.1.1alpha",
+        "request": "2.2.x"
      }
 }
