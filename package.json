@@ -19,6 +19,7 @@
         "mongotest": " 0.1.x",
         "appzone": "0.2.x",
         "horaa": "0.1.1alpha",
-        "request": "2.2.x"
+        "request": "2.2.x",
+        "ltx": "0.1.x"
      }
 }
