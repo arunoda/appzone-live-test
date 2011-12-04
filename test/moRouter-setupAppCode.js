@@ -16,7 +16,7 @@ exports.testAppCodeSetup = function(test) {
 	var onSmsMock = nodemock.mock('onSms').takes(function() {});
 	onSmsMock.calls(0, [{
 		address: address,
-		message: '#' + code	
+		message: 'yl #' + code	
 	}]);
 
 	appzone.hijack('receiver', function(port) {
