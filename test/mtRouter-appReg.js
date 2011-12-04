@@ -4,9 +4,8 @@ var appzone = horaa('appzone');
 var nodemock = require('nodemock');
 var request = require('request');
 
-exports.testRouteDeregister= function(test) {
+exports.testAppReg= function(test) {
 	
-	var appCode = '45445';
 	var appUrl = 'http://dfdfdgdg.com';
 
 	var sendSmsMock = nodemock.mock('sendSms').fail();
@@ -15,12 +14,18 @@ exports.testRouteDeregister= function(test) {
 		return sendSmsMock;
 	});
 
-	var modelMock = nodemock.mock('registerAppCode').takes(appCode, appUrl, function() {}).calls(2, [null]);
+	var modelMock = {
+		registerAppCode: function(appCode, appUrl, callback) {
+			process.nextTick(function() {
+				callback(null);
+			});
+		}
+	};
 	var mtRouter = new MtRouter({}, 8092, modelMock);
 
 	request({
 		method: 'POST',
-		uri: 'http://localhost:8092/code/' + appCode,
+		uri: 'http://localhost:8092/code/',
 		body: JSON.stringify({url: appUrl}),
 		headers: {'Content-Type': 'application/json'}
 	}, function(error, response, data) {
@@ -28,10 +33,10 @@ exports.testRouteDeregister= function(test) {
 		mtRouter.close();
 		test.ok(!error);
 		test.equal(response.statusCode, 200);
-		test.deepEqual(JSON.parse(data), {success: true});
+		console.log(data);
+		test.ok(JSON.parse(data).code);
 
 		test.ok(sendSmsMock.assert());
-		test.ok(modelMock.assert());
 		test.done();
 
 		appzone.restore('sender');
@@ -39,9 +44,8 @@ exports.testRouteDeregister= function(test) {
 
 };
 
-exports.testRouteDeregisterError= function(test) {
+exports.testAppRegError= function(test) {
 	
-	var appCode = '45445';
 	var appUrl = 'http://dfdfdgdg.com';
 
 	var sendSmsMock = nodemock.mock('sendSms').fail();
@@ -51,12 +55,20 @@ exports.testRouteDeregisterError= function(test) {
 	});
 
 	var modelError = {code: 540, message: "bad"};
-	var modelMock = nodemock.mock('registerAppCode').takes(appCode, appUrl, function() {}).calls(2, [modelError]);
+	
+	var modelMock = {
+		registerAppCode: function(appCode, appUrl, callback) {
+			process.nextTick(function() {
+				callback(modelError);
+			});
+		}
+	};
+
 	var mtRouter = new MtRouter({}, 8092, modelMock);
 
 	request({
 		method: 'POST',
-		uri: 'http://localhost:8092/code/' + appCode,
+		uri: 'http://localhost:8092/code/',
 		body: JSON.stringify({url: appUrl}),
 		headers: {'Content-Type': 'application/json'}
 	}, function(error, response, data) {
@@ -66,7 +78,6 @@ exports.testRouteDeregisterError= function(test) {
 		test.deepEqual(JSON.parse(data), modelError);
 
 		test.ok(sendSmsMock.assert());
-		test.ok(modelMock.assert());
 		test.done();
 
 		appzone.restore('sender');
